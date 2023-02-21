@@ -11,8 +11,12 @@ host = os.getenv("DBHOST")
 db_name = os.getenv("DBNAME")
 db_user = os.getenv("DBUSER")
 db_password = os.getenv("DBPASSWORD")
-db_conn = f"host={host} dbname={db_name} user={db_user} password={db_password}"
-conn = psycopg2.connect(db_conn)
+conn = psycopg2.connect(
+    host=host,
+    database=db_name,
+    user=db_user,
+    password=db_password
+)
 
 # Open a cursor to perform DB operations
 cur = conn.cursor()
@@ -21,6 +25,7 @@ cur = conn.cursor()
 cur.execute("SELECT * FROM nftix.events;")
 record = cur.fetchone()
 print(record)
+print(type(record))
 
 # Close connection
 cur.close()
