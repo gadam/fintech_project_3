@@ -17,17 +17,20 @@ st.set_page_config(layout="wide")
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
 
 # Set the contract address (this is the address of the deployed contract)
-owner_address = os.getenv("SMART_CONTRACT_OWNER_ADDRESS")
+# owner_address = os.getenv("SMART_CONTRACT_OWNER_ADDRESS")
+# Get a list of all available accounts from Ganache
+#  and use the first account as contract owner address
+accounts = w3.eth.accounts
+owner_address = accounts[0]
 @st.cache(allow_output_mutation=True)
 
 
 def load_contract():
-    '''Load the Tickets smartcontract 
+    '''Load the `Tickets` smartcontract 
        to register tickets'''
     # Load the contract ABI
     with open(Path("./compiled/tickets_abi.json")) as f:
-        contract_abi = json.load(f)
-
+        contract_abi = json.load(f)    
 
     # Get the contract
     contract = w3.eth.contract(
@@ -108,11 +111,11 @@ events_df = load_events()
 event_id = display_events(events_df)
 tickets_contract = load_contract()
 
-if event_id:
-    buyerName = "Mel Trump"
-    buyerAddress = "0x8fee7A777cCA7E86Cdfb4531186a4A71Fa3f58B8"
-    tokenId = buy(tickets_contract, event_id, buyerName, buyerAddress)
-    st.write(f"Returned token: {tokenId}")
+# if event_id:
+#     buyerName = "Mel Trump"
+#     buyerAddress = "0x8fee7A777cCA7E86Cdfb4531186a4A71Fa3f58B8"
+#     tokenId = buy(tickets_contract, event_id, buyerName, buyerAddress)
+#     st.write(f"Returned token: {tokenId}")
 
 #     buyerName = "Eric Trump"
 #     buyerAddress = "0x0D110FcfE2cF010D0086756C953eD355b117197B"
