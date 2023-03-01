@@ -110,32 +110,42 @@ def buy(contract, events_df):
        Mint a new block for a ticket purchase'''
     with st.sidebar:
             
-        receipt = []
         with st.form("buyer_details"):
             st.markdown("## Buy tickets for:")
-            st.selectbox(
+            selection = st.selectbox(
                 "### Tickets for", 
-                options=events_df[["event_name", "tkt_price_aud"]],
+                options=list(events_df["event_name"]),
+                # format_func=lambda x: events_df.iloc[int(x)]["event_name"],
+                # format_func=list(events_df["event_name"]),
                 key="event_selector"
             )
             quantity = st.number_input("Quantity:", min_value=1)
             buyer_name = st.text_input("Name:")
             buyer_address = st.selectbox("Wallet account address:", accounts[1:])
             if  st.form_submit_button("Purchase ticket", type="primary"):
-                # tx_hash = contract.functions.registerTicket(
-                #     event_row["event_id"],
-                #     buyer_name,
-                #     buyer_address
-                # ).transact({"from": owner_address, "gas": 100000})
-                # receipt = w3.eth.waitForTransactionReceipt(tx_hash)
-                st.success(f"{buyer_name}, of {buyer_address} purchased {quantity}")
+                # Calculate price
+                cost = int(events_df.loc[events_df["event_name"]==selection]["tkt_price_aud"])  * quantity
+                event_id = int(events_df.loc[events_df["event_name"]==selection]["event_id"])
+                tx_hash = contract.functions.registerTicket(
+                    event_id,
+                    buyer_name,
+                    buyer_address, 
+                    quantity
+                ).transact({"from": owner_address, "gas": 100000})
+                tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+                st.success(f"{buyer_name}, wallet: {buyer_address} purchased {quantity} for {selection}. Total: ${cost}, Blockhash: {(tx_receipt.blockHash).hex()}")
+                
+                return tx_receipt
+            else:
+                return False
 
 
 #---------------------------------#
 # Record sale in db               #
 #---------------------------------#
 def update_sales(token):
-    '''Record the ticket sold on the sales transactions table'''
+    '''Update the `events` table record with new `tkts_remaining` balance
+       and record the ticket sold on the sales transactions table'''
     pass
 
 #---------------------------------#
@@ -143,11 +153,14 @@ def update_sales(token):
 #---------------------------------#
 st.title("NFTix - Anti-scalping event ticketing system")
 
+# Retrieve and display the events from the events table
 events_df = load_events()
-
 display_events(events_df)
 
+# Prepare a smartcontract to record the sale in a ledger
 tickets_contract = load_contract()
 
 # User has chosen to buy tickets for an event
-buy(tickets_contract, events_df)
+tx_receipt = buy(tickets_contract, events_df)
+if tx_receipt:
+    update_sales(tx_receipt)

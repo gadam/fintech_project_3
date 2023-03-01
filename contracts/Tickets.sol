@@ -12,6 +12,7 @@ contract TicketToken is ERC721Full {
         uint256 eventId;
         string buyerName;
         address payable buyerAddress;
+        uint256 quantity;
     }
 
     mapping(uint256 => Ticket) public eventTicket;
@@ -23,14 +24,15 @@ contract TicketToken is ERC721Full {
         // address owner,
         uint256 eventId,
         string memory buyerName,
-        address payable buyerAddress
+        address payable buyerAddress,
+        uint256 quantity
     ) public returns (uint256) {
         uint256 tokenId = totalSupply();
-        address owner = msg.sender;
+        // address owner = msg.sender;
 
-        _mint(owner, tokenId);
+        _mint(buyerAddress, tokenId);
 
-        eventTicket[tokenId] = Ticket(eventId, buyerName, buyerAddress);
+        eventTicket[tokenId] = Ticket(eventId, buyerName, buyerAddress, quantity);
 
         return tokenId;
     }
