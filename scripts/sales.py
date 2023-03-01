@@ -16,6 +16,13 @@ import psycopg2
 # Setup                           #
 #---------------------------------#
 load_dotenv()
+
+# Get DB config
+host = os.getenv("DBHOST")
+db_name = os.getenv("DBNAME")
+db_user = os.getenv("DBUSER")
+db_password = os.getenv("DBPASSWORD")
+
 st.set_page_config(layout="wide")
 
 # Define and connect a new Web3 provider
@@ -51,16 +58,13 @@ def load_contract():
 
 #---------------------------------#
 # Retrieve events list from db    #
+# and update balance              #
 #---------------------------------#
 def load_events():
     '''Retrieve the events collected in the events table 
        and display in streamlit web page'''
 
     # Connect to db
-    host = os.getenv("DBHOST")
-    db_name = os.getenv("DBNAME")
-    db_user = os.getenv("DBUSER")
-    db_password = os.getenv("DBPASSWORD")
     conn = psycopg2.connect(host=host, database=db_name, user=db_user, password=db_password)
 
     # Open a cursor to perform DB operations
@@ -85,6 +89,30 @@ def load_events():
     cur.close()
     conn.close()
     return df
+
+def update_event(event_id, quantity):
+    '''Update the remaining tickets balance of
+       event record in `events` table'''
+    # Connect to db
+    conn = psycopg2.connect(host=host, database=db_name, user=db_user, password=db_password)
+
+    # Open a cursor to perform DB operations
+    cur = conn.cursor()
+
+    # Get the current ticket balance for the event and update it
+    sql = "SELECT tkts_remaining FROM nftix.events WHERE event_id = %s;"
+    cur.execute(sql, (event_id,))
+    ticket_balance = cur.fetchone()[0]
+    ticket_balance -= quantity
+    if ticket_balance < 0:
+        ticket_balance = 0
+    sql = "UPDATE nftix.events SET tkts_remaining = %s WHERE event_id = %s;"
+    cur.execute(sql, (ticket_balance, event_id))
+    conn.commit()
+    # Close connection
+    cur.close()
+    conn.close()
+
 
 #---------------------------------#
 # Display list of events for sale #
@@ -126,6 +154,8 @@ def buy(contract, events_df):
                 # Calculate price
                 cost = int(events_df.loc[events_df["event_name"]==selection]["tkt_price_aud"])  * quantity
                 event_id = int(events_df.loc[events_df["event_name"]==selection]["event_id"])
+
+                # Mint a new block for the transaction
                 tx_hash = contract.functions.registerTicket(
                     event_id,
                     buyer_name,
@@ -133,12 +163,16 @@ def buy(contract, events_df):
                     quantity
                 ).transact({"from": owner_address, "gas": 100000})
                 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+
+                # Display receipt
                 st.success(f"{buyer_name}, wallet: {buyer_address} purchased {quantity} for {selection}. Total: ${cost}, Blockhash: {(tx_receipt.blockHash).hex()}")
-                
+
+                # Update `events` table with remaining tickets balance
+                update_event(event_id, quantity)
                 return tx_receipt
             else:
                 return False
-
+    
 
 #---------------------------------#
 # Record sale in db               #
@@ -146,7 +180,7 @@ def buy(contract, events_df):
 def update_sales(token):
     '''Update the `events` table record with new `tkts_remaining` balance
        and record the ticket sold on the sales transactions table'''
-    pass
+
 
 #---------------------------------#
 # Main entry point                #
