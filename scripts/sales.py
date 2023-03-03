@@ -1,6 +1,11 @@
 #---------------------------------#
 # Display the events available    # 
 #   for sale and transact a sale  #
+#                                 #
+# By Fintech Project Group 4:     #
+#   Guy Adam                      #
+#   Sreeni Patnaik                #
+#   Venkata Nagothi               #
 #---------------------------------#
 
 import os
@@ -90,9 +95,10 @@ def load_events():
     conn.close()
     return df
 
-def update_event(event_id, quantity):
+def update_event(event_id, quantity, tx_hash):
     '''Update the remaining tickets balance of
-       event record in `events` table'''
+       event record in `events` table
+       and record a sale in the `event_sales` table'''
     # Connect to db
     conn = psycopg2.connect(host=host, database=db_name, user=db_user, password=db_password)
 
@@ -108,6 +114,8 @@ def update_event(event_id, quantity):
         ticket_balance = 0
     sql = "UPDATE nftix.events SET tkts_remaining = %s WHERE event_id = %s;"
     cur.execute(sql, (ticket_balance, event_id))
+    sql = "INSERT INTO nftix.events_sales (event_id, contract_address) VALUES (%s, %s)"
+    cur.execute(sql, (event_id, tx_hash))
     conn.commit()
     # Close connection
     cur.close()
@@ -143,8 +151,6 @@ def buy(contract, events_df):
             selection = st.selectbox(
                 "### Tickets for", 
                 options=list(events_df["event_name"]),
-                # format_func=lambda x: events_df.iloc[int(x)]["event_name"],
-                # format_func=list(events_df["event_name"]),
                 key="event_selector"
             )
             quantity = st.number_input("Quantity:", min_value=1)
@@ -165,22 +171,14 @@ def buy(contract, events_df):
                 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
                 # Display receipt
-                st.success(f"{buyer_name}, wallet: {buyer_address} purchased {quantity} for {selection}. Total: ${cost}, Blockhash: {(tx_receipt.blockHash).hex()}")
-
+                success_message = f"Buyer: {buyer_name}\nWallet: {buyer_address}\nPurchased: {quantity}\nEvent: {selection}\nTotal: ${cost}\nTransaction hash: {tx_hash.hex()}"
+                st.success(success_message)
                 # Update `events` table with remaining tickets balance
-                update_event(event_id, quantity)
+                update_event(event_id, quantity, tx_hash)
                 return tx_receipt
             else:
                 return False
     
-
-#---------------------------------#
-# Record sale in db               #
-#---------------------------------#
-def update_sales(token):
-    '''Update the `events` table record with new `tkts_remaining` balance
-       and record the ticket sold on the sales transactions table'''
-
 
 #---------------------------------#
 # Main entry point                #
@@ -196,5 +194,4 @@ tickets_contract = load_contract()
 
 # User has chosen to buy tickets for an event
 tx_receipt = buy(tickets_contract, events_df)
-if tx_receipt:
-    update_sales(tx_receipt)
+
