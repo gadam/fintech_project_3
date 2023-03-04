@@ -28,7 +28,7 @@ db_name = os.getenv("DBNAME")
 db_user = os.getenv("DBUSER")
 db_password = os.getenv("DBPASSWORD")
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", page_title="NFT Event Ticketing", page_icon=":ticket:")
 
 # Define and connect a new Web3 provider
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
@@ -87,12 +87,16 @@ def load_events():
             "tkt_price_aud", 
             "total_no_of_tkts", 
             "tkts_remaining"
-        ]
+        ],
     )
 
     # Close connection
     cur.close()
     conn.close()
+
+    df.index = df["event_id"]
+    df.sort_index(inplace=True)
+
     return df
 
 def update_event(event_id, quantity, tx_hash):
@@ -171,9 +175,11 @@ def buy(contract, events_df):
                 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
                 # Display receipt
-                success_message = f"Buyer: {buyer_name}\nWallet: {buyer_address}\nPurchased: {quantity}\nEvent: {selection}\nTotal: ${cost}\nTransaction hash: {tx_hash.hex()}"
-                st.success(success_message)
-                # Update `events` table with remaining tickets balance
+                # st.success(success_message)
+                st.markdown(f":green[Buyer: {buyer_name}, Purchased: {quantity}, Total: ${cost}]")
+                st.markdown(f":green[Wallet: {buyer_address}]")
+                st.markdown(f":green[Event: {selection}]")
+                st.markdown(f":green[Receipt: {tx_hash.hex()}]:sunglasses:")
                 update_event(event_id, quantity, tx_hash)
                 return tx_receipt
             else:
@@ -183,7 +189,7 @@ def buy(contract, events_df):
 #---------------------------------#
 # Main entry point                #
 #---------------------------------#
-st.title("NFTix - Anti-scalping event ticketing system")
+st.title("NFTix - Anti-scalping Event Ticketing System")
 
 # Retrieve and display the events from the events table
 events_df = load_events()
