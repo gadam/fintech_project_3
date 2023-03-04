@@ -37,6 +37,7 @@ w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URI")))
 # Get a list of all available accounts from Ganache
 #  and use the first account as contract owner address
 accounts = w3.eth.accounts
+contract_address = os.getenv("SMART_CONTRACT_ADDRESS")
 owner_address = accounts[0]
 
 # @st.cache(allow_output_mutation=True)
@@ -55,7 +56,7 @@ def load_contract():
 
     # Get the contract
     contract = w3.eth.contract(
-        address=owner_address,
+        address=contract_address,
         abi=contract_abi
     )
 
@@ -135,7 +136,7 @@ def display_events(events_df):
     st.markdown("## Available events")
     display_events_df = pd.DataFrame()
     display_events_df["Event"] = events_df["event_name"]
-    display_events_df["Date"] = events_df["event_date"]
+    display_events_df["Date"] = events_df["event_date"].dt.strftime("%d-%b-%Y, %H:%M:%S")
     display_events_df["Venue"] = events_df["venue"]
     display_events_df["Price"] = events_df["tkt_price_aud"]
     display_events_df["Tickets_Available"] = events_df["tkts_remaining"]
@@ -171,7 +172,7 @@ def buy(contract, events_df):
                     buyer_name,
                     buyer_address, 
                     quantity
-                ).transact({"from": owner_address, "gas": 100000})
+                ).transact({"from": owner_address, "gas": 1000000})
                 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
                 # Display receipt
