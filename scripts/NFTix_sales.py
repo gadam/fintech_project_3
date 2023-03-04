@@ -176,7 +176,6 @@ def buy(contract, events_df):
                 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
                 # Display receipt
-                # st.success(success_message)
                 st.markdown(f":green[Buyer: {buyer_name}, Purchased: {quantity}, Total: ${cost}]")
                 st.markdown(f":green[Wallet: {buyer_address}]")
                 st.markdown(f":green[Event: {selection}]")
@@ -190,7 +189,7 @@ def buy(contract, events_df):
 #---------------------------------#
 # Main entry point                #
 #---------------------------------#
-st.title("NFTix - Anti-scalping Event Ticketing System")
+st.title("NFTix - Anti-Scalping Blockchain-Based Event Ticketing System")
 
 # Retrieve and display the events from the events table
 events_df = load_events()
