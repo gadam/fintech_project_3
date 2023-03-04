@@ -44,4 +44,12 @@ contract TicketToken is ERC721Full {
     function getBuyerAddress(uint256 tokenId) public view returns (address) {
         return eventTicket[tokenId].buyerAddress;
     }
+
+    function getQuantity(uint256 tokenId) public view returns (uint256) {
+        return eventTicket[tokenId].quantity;
+    }
+
+    function getEventId(uint256 tokenId) public view returns (uint256) {
+        return eventTicket[tokenId].eventId;
+    }
 }
