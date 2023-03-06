@@ -40,7 +40,7 @@ Retreiving the newly added Event details.
 ![03_tc_01_adding_new_event_04](https://user-images.githubusercontent.com/112692272/223017282-bb5d6bb6-11f0-4d31-b7c4-c0c861a0f0fc.png)
 
 
-Step 2 : The event participants can view the available events and purchase the tickets
+**The event participants can view the available events and purchase the tickets**
 
 The aspiring event participants can login to see the various events and their schedules along with the available tickets and their prices on the Streamlit front-end screen. The ticket purchase can be done instantly :
 
