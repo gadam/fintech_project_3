@@ -1,3 +1,6 @@
+
+![NFTix_Banner](https://user-images.githubusercontent.com/112692272/223023428-74b07d70-50c6-443d-9c3b-78d04fcc4672.png)
+
 **NFTix - Anti-scalping blockchain based event Ticketing system**
 
 This project aims at building a resilient Non-Fungible Event ticketing application which provides ability to purchase tickets for various events on blockchain. The primary aim of the application is to prevent ticket scalping. Example - A buyer cannot purchase a bulk of tickets much in advance and later sell them off for a different (higher) price because all the purchases are blockchain based and the ownership of the tickets cannot be transferred to a different person, it is simply not possible on blockchain. 
