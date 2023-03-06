@@ -14,7 +14,7 @@ This project uses PostgreSQL database to store events related data and transacti
 
 ## The whole application workflow :
 
-Step 1 : Event Oraganizers entering/updating the event related details
+**Event Oraganizers entering/updating the event related details**
 
 The Event Organizers can register and login to our web application to register their Events. The details of the Events can be entered on the front-end Streamlit application and upon saving, the details will be pushed through to the PostgreSQL database in the backend. Similarly, The event details can be updated in-case of any changes to the events.
 
