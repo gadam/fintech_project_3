@@ -82,8 +82,8 @@ Screen-shot showing that a successful ticket purchase is recorded in nftix.event
 
 ![04_tc_02_psql_after_transactions_05](https://user-images.githubusercontent.com/112692272/223025925-a7f840f6-34d9-4747-87a6-efa4a951e6bf.png)
 
-**Ganache transactions
-**
+
+**Ganache transactions**
 
 Similarly - A successful purchases are recorded on Ganache. Ganache Wallets are used by the Buyers to purchase the tickets.
 
@@ -94,11 +94,10 @@ Similarly - A successful purchases are recorded on Ganache. Ganache Wallets are 
 ![04_tc_02_ganache_after_transactions_03](https://user-images.githubusercontent.com/112692272/223025780-295fb794-cbfc-45b3-b104-4f7f0d9829fa.png)
 
 
-**Dependencies and script execution process
-**
 
-**Dependencies
-**
+**Dependencies and script execution process**
+
+**Dependencies**
 
 To ensure the code executes well, below are the pre-requisites and dependecies to be full-filled :
 
@@ -113,8 +112,8 @@ To ensure the code executes well, below are the pre-requisites and dependecies t
 - Ensure "psycopg2" module is successfully installed
 - Ensure Web3==5.17.0 is successfully installed
 
-**Application launch and execution process
-**
+
+**Application launch and execution process**
 
 Clone the Git repo as shown below :
 
@@ -129,9 +128,3 @@ Execute the script as follows
     streamlit run sales.py
 
 You should be able to see the front-end webpage.
-
-
-
-
-
-
