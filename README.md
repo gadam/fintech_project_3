@@ -121,10 +121,10 @@ Clone the Git repo as shown below :
 
 Go to the cloned directory
 
-    cd fintech_project_3
+    cd fintech_project_3/scripts
 
 Execute the script as follows
 
-    streamlit run sales.py
+    streamlit run 01_NFTix_sales.py
 
 You should be able to see the front-end webpage.
