@@ -23,7 +23,7 @@ The Event Organizers can register and login to our web application to register t
 
 Below are the screen-shots showing how to add a new event :
 
-First screen to enter the event details.
+Cick on "NFTix Events" on the side-ar to enter the event details.
 
 ![03_tc_01_adding_new_event_01](https://user-images.githubusercontent.com/112692272/223017198-17eb5472-7b50-4178-bcb5-5d81acfe9001.png)
 
