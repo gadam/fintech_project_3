@@ -5,13 +5,13 @@
 
 This project aims at building a resilient Non-Fungible Event ticketing application which provides ability to purchase tickets for various events on blockchain. The primary aim of the application is to prevent ticket scalping. Example - A buyer cannot purchase a bulk of tickets much in advance and later sell them off for a different (higher) price because all the purchases are blockchain based and the ownership of the tickets cannot be transferred to a different person, it is simply not possible on blockchain. 
 
-Technical Architecture
+***Technical Architecture***
 
 The whole application architecture comprises of 5 components : A PostgreSQL Database which will store the details of all the events and receives calls from Streamlit/Python to store the details of ticket purchases. The addition of the event details, purchasing of the tickets can be done on the Streamlit front-end and the actual ticket purchasing activity on the blockchain is performed by Solidity. Ganache is used as a buyer's wallet to make successful purchases solely for this test application purpose.
 
 The Streamlit application interacts with Python and Solidity. The Python application interacts with PostgreSQL database and the Streamlit to cater to the requests made by Streamlit to store and retreive the data to and from PostgreSQL database. When the ticket purchases are made, Streamlit interacts with Solidity and Ganache Wallets to make a successfull purchase on the blockchain. Once the ticket purchase is successful, the transaction details are pushed through to PostgreSQL database by Python.
 
-Database
+***Data Flow***
 
 This project uses PostgreSQL database to store events related data and transactions related to ticket purchases. We have used "psycopg2" Python module which will help Python perfrom query execution on PostgreSQL database. The database comprises of a schema called "nftix" which has two tables called "events" and "event_sales". The "event" table stored the details of all the upcoming events with their schedules, number of tickets, ticket prices and remaining tickets. The "event_sales" table stores the details of the tickets purchased including the event id and buyer's address.
 
