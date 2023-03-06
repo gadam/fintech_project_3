@@ -46,9 +46,59 @@ The aspiring event participants can login to see the various events and their sc
 
 On the lefthand side on the side-bar participants can choose the Event, choose the number of tickets needed for any event of interest, select a Wallet they want to use to purchase the ticket and click "purchase ticket" button then the transaction would be performed on the blockchain. To make this possible we have used Solidity (A smart contracting application) in the background which registeres the ticket purchase on the blockchain and a unique hash-value will be generated in the form of a reciept to uniquely identify the purchase. Also, for building this test application we have used Ganache Wallets a Buyer can use to purchase the tickets. A successful transaction will make a database call to store the event_id, transaction_id and Buyer's contract Address in a table called "nftix.events_sales" table.
 
-Dependencies and script execution process
+The status of the ticket purchase is displayed on Streamlit screen and also, the mined Blocks can be verified on Ganache as well.
 
-Dependencies
+Below are series of screen-shots showing up ticket purchasing process :
+
+Streamlit screen before ticket purchasing : Click on "NFTix Sales" to go to the ticket purchasing screen.
+
+![03_tc_01_streamlit_before_transactions](https://user-images.githubusercontent.com/112692272/223025083-c2b40585-5552-44b4-aa8b-cab992ca193d.png)
+
+Ganache before ticket purchasing
+
+![03_tc_01_ganache_before_transactions](https://user-images.githubusercontent.com/112692272/223025217-f93eb6e0-72bf-46f0-b172-1e8dddadbdc4.png)
+
+Streamlit purchasing process : Enter the required details on the side-bar and click "Purchase Ticket" button.
+
+![04_tc_02_streamlit_before_transactions](https://user-images.githubusercontent.com/112692272/223025301-4ffaf223-f5e2-4b47-82eb-55d8b0373200.png)
+
+The status after a successful purchase.
+
+![04_tc_02_streamlit_after_transactions](https://user-images.githubusercontent.com/112692272/223025466-4c963b83-b786-4079-b7c3-c000aa04abb1.png)
+
+Streamlit confirming a successful blockchain transaction : Click on "NFTix BlockChain Records" to see blockchain purchases.
+
+![04_tc_02_streamlit_blockchain_transactions](https://user-images.githubusercontent.com/112692272/223025525-f97d68c1-5db0-46e9-bdd7-43d6a8943777.png)
+
+**Database records**
+
+After a successful purchase, a database calls are made to store the transaction record in the database table called nftix.events_sales and the purchases tickets are updated in the nftix.events table as well.
+
+Screen-shot showing the number of tickets purchased (4) are deducted from the tickets remaining in the PostgreSQL database table nftix.events.
+
+![04_tc_02_psql_after_transactions_04](https://user-images.githubusercontent.com/112692272/223025866-e90fbbe1-4057-4c7b-9701-2ef9a8cbd210.png)
+
+Screen-shot showing that a successful ticket purchase is recorded in nftix.events_sales table in PostgreSQL database.
+
+![04_tc_02_psql_after_transactions_05](https://user-images.githubusercontent.com/112692272/223025925-a7f840f6-34d9-4747-87a6-efa4a951e6bf.png)
+
+**Ganache transactions
+**
+
+Similarly - A successful purchases are recorded on Ganache. Ganache Wallets are used by the Buyers to purchase the tickets.
+
+![04_tc_02_ganache_after_transactions_01](https://user-images.githubusercontent.com/112692272/223025734-887c093d-2eef-4853-a4b3-58cd03e881fb.png)
+
+![04_tc_02_ganache_after_transactions_02](https://user-images.githubusercontent.com/112692272/223025759-c4366551-9ab2-41bc-b953-972b1378d908.png)
+
+![04_tc_02_ganache_after_transactions_03](https://user-images.githubusercontent.com/112692272/223025780-295fb794-cbfc-45b3-b104-4f7f0d9829fa.png)
+
+
+**Dependencies and script execution process
+**
+
+**Dependencies
+**
 
 To ensure the code executes well, below are the pre-requisites and dependecies to be full-filled :
 
@@ -63,7 +113,8 @@ To ensure the code executes well, below are the pre-requisites and dependecies t
 - Ensure "psycopg2" module is successfully installed
 - Ensure Web3==5.17.0 is successfully installed
 
-Script Execution process
+**Application launch and execution process
+**
 
 Clone the Git repo as shown below :
 
