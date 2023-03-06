@@ -18,6 +18,25 @@ Step 1 : Event Oraganizers entering/updating the event related details
 
 The Event Organizers can register and login to our web application to register their Events. The details of the Events can be entered on the front-end Streamlit application and upon saving, the details will be pushed through to the PostgreSQL database in the backend. Similarly, The event details can be updated in-case of any changes to the events.
 
+Below are the screen-shots showing how to add a new event :
+
+First screen to enter the event details.
+
+![03_tc_01_adding_new_event_01](https://user-images.githubusercontent.com/112692272/223017198-17eb5472-7b50-4178-bcb5-5d81acfe9001.png)
+
+Once details are entered - Click "Add Record" then the event details will be pushed to PostgreSQL database.
+
+![03_tc_01_adding_new_event_02](https://user-images.githubusercontent.com/112692272/223017223-956c1935-6fdf-42b7-960a-7f9d31df8b51.png)
+
+The new event details showing up in the PostgreSQL Database.
+
+![03_tc_01_adding_new_event_03](https://user-images.githubusercontent.com/112692272/223017249-d64c1222-b3e5-4514-a25c-eddbfc507d92.png)
+
+Retreiving the newly added Event details.
+
+![03_tc_01_adding_new_event_04](https://user-images.githubusercontent.com/112692272/223017282-bb5d6bb6-11f0-4d31-b7c4-c0c861a0f0fc.png)
+
+
 Step 2 : The event participants can view the available events and purchase the tickets
 
 The aspiring event participants can login to see the various events and their schedules along with the available tickets and their prices on the Streamlit front-end screen. The ticket purchase can be done instantly :
