@@ -125,6 +125,6 @@ Go to the cloned directory
 
 Execute the script as follows
 
-    streamlit run sales.py
+    streamlit run ./scripts/sales.py
 
 You should be able to see the front-end webpage.
