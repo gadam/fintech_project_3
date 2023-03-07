@@ -125,6 +125,6 @@ Go to the cloned directory
 
 Execute the script as follows
 
-    streamlit run ./scripts/sales.py
+    streamlit run ./scripts/01_NFTix_sales.py
 
 You should be able to see the front-end webpage.
